@@ -4,9 +4,11 @@ import java.util.UUID;
 
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -41,9 +43,24 @@ public class UserController {
         return Response.ok(userService.createUser(userEntity)).build();
     }
 
+    @PUT
+    @Path("/{id}")
+    @Transactional
+    public Response updateUser(@PathParam("id") UUID userId, UserEntity userEntity) {
+        return Response.ok(userService.updateUser(userId, userEntity)).build();
+    }
+
     @GET
     @Path("/{id}")
     public Response findById(@PathParam("id") UUID userId) {
         return Response.ok(userService.findById(userId)).build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @Transactional
+    public Response deleteById(@PathParam("id") UUID userId) {
+        userService.deleteById(userId);
+        return Response.noContent().build();
     }
 }
